@@ -1,0 +1,235 @@
+<!DOCTYPE html><html><head><title></title><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"><style type='text/css'>
+body {
+    font-family: 'Gentium Basic', 'Helvetica', 'Arial';
+    background:#000;
+    background-size:100%;
+    background-repeat:no-repeat;
+    color:#fff;
+    margin:0;
+    padding:0;
+    font-weight:bold;
+}
+
+h1, h2, h3, p {
+    margin:0;
+}
+
+em, b {
+    font-style:normal;
+    color:#0c0;
+    font-size:125%;
+}
+
+a {
+    color:#34d0e7;
+    text-decoration:none;
+}
+a:hover {
+    text-shadow:
+        0 0 32px #34d0e7;
+}
+
+img {
+    width:100%;
+}
+
+div {
+    cursor:pointer;
+    cursor:hand;
+    position:absolute;
+    top:0px;
+    left:0px;
+    padding:75px;
+    line-height:120%;
+    text-align:center;
+}
+
+div.left, ul {
+    text-align:left;
+}
+
+.small {
+    font-size:60%;
+}
+
+div.imageText {
+    text-shadow:0px 0px 20px #000;
+}
+</style><script type='text/javascript'>
+window.onload = function() {
+    var s = document.getElementsByTagName('div'), cur = 0, ti;
+    if (!s) return;
+
+    linkExternal();
+
+    function linkExternal() {
+        var a = document.getElementsByTagName('a');
+        for (var i = 0; i < a.length; i++) {
+            a[i].target = '_blank';
+        }
+    }
+
+    function go(n) {
+        cur = n;
+        var i = 1e3, e = s[n], t;
+        for (var k = 0; k < s.length; k++) s[k].style.display = 'none';
+        e.style.display = 'inline';
+        e.style.fontSize = i + 'px';
+        if (e.firstChild.nodeName === 'IMG') {
+            document.body.style.backgroundImage = 'url(' + e.firstChild.src + ')';
+            e.firstChild.style.display = 'none';
+            if ('classList' in e) e.classList.add('imageText');
+        } else {
+            document.body.style.backgroundImage = '';
+            document.body.style.backgroundColor = e.style.backgroundColor;
+        }
+        if (ti !== undefined) window.clearInterval(ti);
+        t = parseInt(e.getAttribute('time-to-next') || 0, 10);
+        if (t > 0) ti = window.setTimeout(fwd, (t * 1000));
+        while (
+            e.offsetWidth > window.innerWidth ||
+            e.offsetHeight > window.innerHeight) {
+            e.style.fontSize = (i -= 2) + 'px';
+            if (i < 0) break;
+        }
+        e.style.marginTop = ((window.innerHeight - e.offsetHeight) / 2) + 'px';
+        if (window.location.hash !== n) window.location.hash = n;
+        document.title = e.textContent || e.innerText;
+    }
+    document.onclick = function(e) {
+        if (e.shiftKey || e.altKey || e.shiftKey || e.button>0 || e.target.nodeName==='A') return;
+        go(++cur % (s.length));
+
+    };
+    function fwd() { go(Math.min(s.length - 1, ++cur)); }
+    function rev() { go(Math.max(0, --cur)); }
+    document.onkeydown = function(e) {
+        if (e.which === 39) fwd();
+        if (e.which === 37) rev();
+        if (e.which === 36) go(0); // home
+        if (e.which === 35) go(s.length-1); // end
+    };
+    document.ontouchstart = function(e) {
+        var x0 = e.changedTouches[0].pageX;
+        document.ontouchend = function(e) {
+            var x1 = e.changedTouches[0].pageX;
+            if (x1 - x0 < 0) fwd();
+            if (x1 - x0 > 0) rev();
+        };
+    };
+    function parse_hash() {
+        return Math.max(Math.min(
+            s.length - 1,
+            parseInt(window.location.hash.substring(1), 10)), 0);
+    }
+    if (window.location.hash) cur = parse_hash() || cur;
+    window.onhashchange = function() {
+        var c = parse_hash();
+        if (c !== cur) go(c);
+    };
+
+    go(cur);
+};
+</script></head><body>
+
+
+<div>Intro to OpenStreetMap<br><b class="small">Keith Jenkins</b></div>
+<!--<div><b>Keith Jenkins</b><br>GIS&nbsp;Librarian<br>Cornell&nbsp;University</div>-->
+
+<div><b>Why OSM?</b></div>
+<div>Open data</div>
+<div>Many tools for using and analyzing OSM data</div>
+<div>Most complete street map of the world</div>
+
+<div class="left"><a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5552279/">Barrington-Leigh C, Millard-Ball A. (2017)<br>The world’s user-generated road map is more than 80% complete.</a></div>
+
+<div> <img src="image/barrington-leigh-1.png" /></div>
+<div> <img src="image/barrington-leigh-2.png" /></div>
+
+<div>Also, OpenStreetMap is more than just streets...</div>
+
+<div>buildings, waterways, railroads, trails, placenames, schools, banks, churches, mosques, temples, libraries, museums, hospitals, fire stations, forests, cemeteries, gardens, shops, offices, swimming pools, playgrounds, tennis courts, sports fields, and much more</div>
+
+
+<div><b>OSM License and Copyright</b></div>
+<div>OSM requires attribution, and <a href="https://www.openstreetmap.org/copyright">linking to the copyright page</a></div>
+<div><a href="https://wiki.osmfoundation.org/wiki/Licence/Community_Guidelines">OSM Community Guidelines</a></div>
+
+<div><b>The Elements of OSM</b></div>
+<div>nodes, ways, tags, relations</div>
+<div>Nodes (points)</div>
+<div>Ways (lines,&nbsp;polygons)</div>
+<div>Tags (attributes)</div>
+<div class='left'>building=yes<br>building=house<br>building=commercial</div>
+<div class='left'>highway=primary<br>highway=residential<br>highway=footway</div>
+<div>OSM wiki has a <a href="https://wiki.openstreetmap.org/wiki/Map_Features#Building">guide to OSM tags</a></div>
+<div><a href="https://taginfo.openstreetmap.org/keys/building#values">TagInfo</a> provides tag usage statistics</div>
+<div>Relations</div>
+
+
+<div><b>Acquiring OSM data</b></div>
+
+<div><a href="https://www.openstreetmap.org/#map=8/18.930/-73.196">Export .osm from OpenStreetMap.org</a></div>
+
+<!--
+<div> <img src="image/openstreetmap-export.png"></div>
+<div> <img src="image/openstreetmap-export-bbox.png"></div>
+<div> <img src="image/openstreetmap-export-other.png"></div>
+-->
+
+
+
+<div><b>QGIS Plugins</b> QuickMapServices QuickOSM OSMDownloader</div>
+
+<div><b>QuickMapServices</b> plugin</div>
+<div>OpenStreetMap Standard<br><img src="image/quickmapservices-osm-standard.png" /></div>
+<div>Mapbox Gray<br><img src="image/quickmapservices-mapbox-gray.png" /></div>
+<div>Stamen Toner<br><img src="image/quickmapservices-stamen-toner.png" /></div>
+<div>Stamen Watercolor<br><img src="image/quickmapservices-stamen-watercolor.png" /></div>
+
+
+<div><b>QuickOSM</b> plugin</div>
+<div>Download specific tags within an area</div>
+<div> <img src="image/quickosm-building.png" /></div>
+
+
+<div><b>OSMDownloader</b> plugin</div>
+<div>Download everything within an area</div>
+<div> <img src="image/osmdownloader.png" /></div>
+
+
+
+
+<div><b>Websites offering OSM extracts</b></div>
+
+<div><a href="https://download.geofabrik.de/">Geofabrik</a></div>
+<div>downloads by country/state, updated daily</div>
+
+
+<div><a href="https://export.hotosm.org/en/v3/">HOT Export Tool</a></div>
+<div> <img src="image/hot-export-1.png"></div>
+<div> <img src="image/hot-export-2.png"></div>
+<div> <img src="image/hot-export-3.png"></div>
+<div> <img src="image/hot-export-education.png"></div>
+<div> <img src="image/hot-export-healthcare.png"></div>
+<div> <img src="image/hot-export-4.png"></div>
+<div> <img src="image/hot-export-done.png"></div>
+<div>HOT Exports are split into point, line, polygon layers</div>
+<div>Best to select just one "theme" at a time</div>
+
+
+<div><em>OpenStreetMap ecosystem</em></div>
+
+<div><a href="http://osmstats.neis-one.org/">OSM Stats</a></div>
+
+<div><a href="http://osm-analytics.org/#/show/polygon:tfqeP%7BvvjFwgCl%5Eg%5DsoBbjCsA/buildings/recency">OSM-Analytics.org</a></div>
+
+<div><a href="https://osmcha.mapbox.com/changesets/53786108?filters=%7B%22comment%22%3A%5B%7B%22label%22%3A%22cornell%22%2C%22value%22%3A%22cornell%22%7D%5D%2C%22date__gte%22%3A%5B%7B%22label%22%3A%22%22%2C%22value%22%3A%22%22%7D%5D%2C%22area_lt%22%3A%5B%7B%22label%22%3A%221%22%2C%22value%22%3A%221%22%7D%5D%2C%22geometry%22%3A%5B%7B%22label%22%3A%7B%22coordinates%22%3A%5B%5B%5B-76.47118630177125%2C42.45425300537124%5D%2C%5B-76.46877884297577%2C42.437287397719984%5D%2C%5B-76.49935356969793%2C42.438175763406065%5D%2C%5B-76.4991128238187%2C42.45469706951451%5D%2C%5B-76.47118630177125%2C42.45425300537124%5D%5D%5D%2C%22type%22%3A%22Polygon%22%7D%2C%22value%22%3A%7B%22coordinates%22%3A%5B%5B%5B-76.47118630177125%2C42.45425300537124%5D%2C%5B-76.46877884297577%2C42.437287397719984%5D%2C%5B-76.49935356969793%2C42.438175763406065%5D%2C%5B-76.4991128238187%2C42.45469706951451%5D%2C%5B-76.47118630177125%2C42.45425300537124%5D%5D%5D%2C%22type%22%3A%22Polygon%22%7D%7D%5D%7D">OSM Cha</a></div>
+
+<div><a href="http://yosmhm.neis-one.org/">Your OSM Heat Map</a></div>
+
+<div><a href="https://osmlab.github.io/show-me-the-way/">Show me the way</a></div>
+
+</body>
+</html>
+

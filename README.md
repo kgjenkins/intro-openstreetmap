@@ -1,1 +1,3 @@
-# openstreetmap-intro
+# Intro to OpenStreetMap
+
+
